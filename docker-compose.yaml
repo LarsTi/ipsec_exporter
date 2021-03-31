@@ -1,0 +1,7 @@
+version: '3'
+
+services:
+        ipsec_exporter:
+                #restart: unless-stopped
+                build: .
+
