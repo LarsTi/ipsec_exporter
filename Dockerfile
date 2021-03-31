@@ -9,4 +9,7 @@ FROM alpine:latest
 WORKDIR /app
 
 COPY --from=builder /app/main /app/main
+# Reserved Exporter Port for this exporter
+EXPOSE 9814 
 CMD ["/app/main"]
+

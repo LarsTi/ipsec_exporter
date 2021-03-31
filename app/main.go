@@ -12,7 +12,7 @@ func main() {
 	strongswanCollector := NewStrongswanCollector()
 	strongswanCollector.init()
 	http.Handle("/metrics", promhttp.Handler())
-	log.Fatalln(http.ListenAndServe(":8080", nil))
+	log.Fatalln(http.ListenAndServe(":9814", nil))
 }
 func listSAs()([]LoadedIKE, error){
 	s, err := vici.NewSession()
