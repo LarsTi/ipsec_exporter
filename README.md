@@ -6,9 +6,27 @@ This repository is to monitor a running strongSwan via the [VICI] (https://wiki.
 It connects to the socket and queries the "list-sas" command, in response gets a list of streamed "list-sa" events from the strongswan core back.
 These streamed events are then marshalled to a go slice, which is then analyzed for the metrics itself.
 
-## Customizing
+## Usage
+
+### Customizing
 
 By default, there is no customizing.
+
+### Mounts
+
+#### Socket
+
+The programm needs to read the socket at */var/run/charon.vici*. 
+This is the default path for strongswan to place the unix socket, so if you did not change it, that should work.
+However, due to the containerization you need to mount that file explicitly, or mount */var/run* of the strongSwan to the container.
+
+You will need read and write access to this socket, as the program is issuing a command and reading the answer.
+
+## Error Handling
+
+The program simply logs any errors. If you are unable to connect to the vici socket, this will produce a log entry at every scrape, not more or less.
+The scrape itself will just return a lot of empty metrics, but be up, as the prometheus part is fully functional.
+In normal mode this should never happen.
 
 ## Prometheus
 
