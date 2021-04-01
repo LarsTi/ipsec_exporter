@@ -1,7 +1,7 @@
 # ipsec_exporter
 Exporter for strongSwan via vici
 
-This repository is to monitor a running strongSwan via the (VICI) [https://wiki.strongswan.org/projects/strongswan/wiki/Vici].
+This repository is to monitor a running strongSwan via the [VICI] (https://wiki.strongswan.org/projects/strongswan/wiki/Vici).
 
 It connects to the socket and queries the "list-sas" command, in response gets a list of streamed "list-sa" events from the strongswan core back.
 These streamed events are then marshalled to a go slice, which is then analyzed for the metrics itself.
@@ -14,7 +14,7 @@ By default, there is no customizing.
 
 The official prometheus port is 9814. 
 It is exposed via Dockerfile and is in the serve command of the webserver.
-The port is also published at the (github list of exporters) [https://github.com/prometheus/prometheus/wiki/Default-port-allocations]
+The port is also published at the [github list of exporters] (https://github.com/prometheus/prometheus/wiki/Default-port-allocations)
 
 ## Grafana
 
@@ -29,11 +29,18 @@ Query B (Legend: outbound {{child_name}}):
 
 sum(increase(strongswan_sa_bytes_outbound{ike_name="${ike}"}[1m])) by (child_name)
 
+<img width="787" alt="image" src="https://user-images.githubusercontent.com/5329497/113253664-d84bf000-92c5-11eb-9635-b9fb182150f9.png">
+
+
+
 ### time until rekey
 
 Query A (Legend: Child ID {{child_name}} {{child_id}})
 
 strongswan_sa_rekey_second{ike_name="${ike}"}
+
+<img width="787" alt="image" src="https://user-images.githubusercontent.com/5329497/113253628-c66a4d00-92c5-11eb-9a1b-3e3d8bd92641.png">
+
 
 ## WIP
 
