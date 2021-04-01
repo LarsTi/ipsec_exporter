@@ -1,7 +1,7 @@
 # ipsec_exporter
 Exporter for strongSwan via vici
 
-This repository is to monitor a running strongSwan via the [VICI] (https://wiki.strongswan.org/projects/strongswan/wiki/Vici).
+This repository is to monitor a running strongSwan via the [VICI](https://wiki.strongswan.org/projects/strongswan/wiki/Vici).
 
 It connects to the socket and queries the "list-sas" command, in response gets a list of streamed "list-sa" events from the strongswan core back.
 These streamed events are then marshalled to a go slice, which is then analyzed for the metrics itself.
@@ -32,7 +32,7 @@ In normal mode this should never happen.
 
 The official prometheus port is 9814. 
 It is exposed via Dockerfile and is in the serve command of the webserver.
-The port is also published at the [github list of exporters] (https://github.com/prometheus/prometheus/wiki/Default-port-allocations)
+The port is also published at the [github list of exporters](https://github.com/prometheus/prometheus/wiki/Default-port-allocations)
 
 ## Grafana
 
