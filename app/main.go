@@ -20,6 +20,7 @@ func listSAs()([]LoadedIKE, error){
 		log.Printf("Error Connecting to vici: %s", err)
 		return nil, err
 	}
+	defer s.Close()
 
 	var retVar []LoadedIKE
 	msgs, err := s.StreamedCommandRequest("list-sas", "list-sa", nil)
