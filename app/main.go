@@ -45,8 +45,5 @@ func listSAs() ([]LoadedIKE, error) {
 		}
 	}
 
-	// close the socket
-	s.Close()
-
 	return retVar, nil
 }
