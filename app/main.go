@@ -1,10 +1,11 @@
 package main
 
-import(
+import (
 	"log"
-	"github.com/strongswan/govici/vici"
 	"net/http"
+
 	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"github.com/strongswan/govici/vici"
 )
 
 func main() {
@@ -14,7 +15,7 @@ func main() {
 	http.Handle("/metrics", promhttp.Handler())
 	log.Fatalln(http.ListenAndServe(":9814", nil))
 }
-func listSAs()([]LoadedIKE, error){
+func listSAs() ([]LoadedIKE, error) {
 	s, err := vici.NewSession()
 	if err != nil {
 		log.Printf("Error Connecting to vici: %s", err)
@@ -27,8 +28,8 @@ func listSAs()([]LoadedIKE, error){
 	if err != nil {
 		return retVar, err
 	}
-	for _,m := range msgs.Messages() {
-		if e := m.Err(); e != nil{
+	for _, m := range msgs { // <- Directly iterate over msgs
+		if e := m.Err(); e != nil {
 			//ignoring this error
 			continue
 		}
@@ -36,13 +37,13 @@ func listSAs()([]LoadedIKE, error){
 			inbound := m.Get(k).(*vici.Message)
 			var ike LoadedIKE
 			if e := vici.UnmarshalMessage(inbound, &ike); e != nil {
-				//ignoring this marshal/unmarshal errro!
+				//ignoring this marshal/unmarshal error!
 				continue
 			}
 			ike.Name = k
 			retVar = append(retVar, ike)
-
 		}
 	}
+
 	return retVar, nil
 }
