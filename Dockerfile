@@ -1,4 +1,4 @@
-FROM golang:1.18 as builder
+FROM golang:1.20 AS builder
 WORKDIR /app
 COPY go.mod go.mod
 RUN go get github.com/prometheus/client_golang/prometheus && \
