@@ -28,7 +28,7 @@ func listSAs() ([]LoadedIKE, error) {
 	if err != nil {
 		return retVar, err
 	}
-	for _, m := range msgs { // <- Directly iterate over msgs
+	for _, m := range msgs.Messages() { // <- Directly iterate over msgs
 		if e := m.Err(); e != nil {
 			//ignoring this error
 			continue
