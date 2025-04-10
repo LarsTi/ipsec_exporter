@@ -1,11 +1,8 @@
-FROM golang:1.20 AS builder
+FROM golang:1.21 AS builder
 WORKDIR /app
 COPY go.mod go.mod
-RUN go get github.com/prometheus/client_golang/prometheus && \
-	go get github.com/prometheus/client_golang/prometheus/promhttp && \
-	go get github.com/strongswan/govici/vici
-#	go mod download
-COPY app /app
+RUN go mod download
+COPY . /app
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
 
 FROM alpine:latest
