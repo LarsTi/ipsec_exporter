@@ -35,10 +35,10 @@ type LoadedChild struct {
 	IntegKey	int			`vici:"integ-keysize"`
 	DHGroup		string			`vici:"dh-group"`
 	BytesIn		int64			`vici:"bytes-in"`
-	PacketsIn	int64			`vici:"bytes-out"`
+	PacketsIn	int64			`vici:"packets-in"`
 	LastInSec	int64			`vici:"use-in"`
 	BytesOut	int64			`vici:"bytes-out"`
-	PacketsOut	int64			`vici:"bytes-out"`
+	PacketsOut	int64			`vici:"packets-out"`
 	LastOutSec	int64			`vici:"use-out"`
 	EstablishSec	int64			`vici:"install-time"`
 	RekeySec	int64			`vici:"rekey-time"`
