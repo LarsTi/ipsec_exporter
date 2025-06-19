@@ -307,7 +307,7 @@ func (c *StrongswanCollector) collectIkeMetrics(d LoadedIKE, ch chan<- prometheu
 }
 func (c *StrongswanCollector) collectSaMetrics(name string, uniqueId string ,d LoadedChild, ch chan<- prometheus.Metric){
 	state := 0
-	if d.State == "ESTABLISHED" {
+	if d.State == "INSTALLED" {
 		state = 1
 	}
 	ch <- prometheus.MustNewConstMetric(
