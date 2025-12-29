@@ -1,0 +1,29 @@
+FROM buildpack-deps:stable
+
+WORKDIR /docker
+
+RUN apt-get update && apt-get install -y iptables \
+  libgmp-dev
+
+ENV STRONGSWAN_VERSION 6.0.4
+
+RUN mkdir -p /usr/src/strongswan \
+        && cd /usr/src \
+        && curl -SOL "https://download.strongswan.org/strongswan-$STRONGSWAN_VERSION.tar.gz" \
+        && export GNUPGHOME="$(mktemp -d)" \
+        && tar -zxf strongswan-$STRONGSWAN_VERSION.tar.gz -C /usr/src/strongswan --strip-components 1 \
+        && cd /usr/src/strongswan \
+        && ./configure --prefix=/usr --sysconfdir=/etc \
+                --enable-openssl \
+                --enable-bypass-lan \
+                --enable-gcm \
+                --enable-log-thread-ids \
+                --enable-newhope \
+                --enable-sha3 \
+#                --disable-swanctl \
+        && make -j \
+        && make install \
+        && rm -rf "/usr/src/strongswan/*"
+RUN apt-get install -y traceroute tcpdump net-tools
+
+CMD /usr/libexec/ipsec/charon --debug-ike 0 --debug-cfg 1 --debug-mgr 1 --debug-enc 0 --debug-net 0--debug-chd 1
