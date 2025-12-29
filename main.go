@@ -1,8 +1,10 @@
 package main
 
 import (
+	"context"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/strongswan/govici/vici"
@@ -24,12 +26,13 @@ func listSAs() ([]LoadedIKE, error) {
 	defer s.Close()
 
 	var retVar []LoadedIKE
-	msgs, err := s.StreamedCommandRequest("list-sas", "list-sa", nil)
-	if err != nil {
-		return retVar, err
-	}
-	for _, m := range msgs.Messages() { // <- Directly iterate over msgs
-		if e := m.Err(); e != nil {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	var in *vici.Message
+
+	for m, err := range s.CallStreaming(ctx, "list-sas", "list-sa", in) { // <- Directly iterate over msgs
+		if e := m.Err(); e != nil || err != nil {
 			//ignoring this error
 			continue
 		}
