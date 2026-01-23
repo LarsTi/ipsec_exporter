@@ -1,7 +1,8 @@
 services:
         ipsec_exporter:
                 #restart: unless-stopped
-                build: .
+                build:
+                        dockerfile: Dockerfile
                 ports:
                 - 9814:9814
                 volumes:
