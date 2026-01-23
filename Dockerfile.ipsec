@@ -26,4 +26,4 @@ RUN mkdir -p /usr/src/strongswan \
         && rm -rf "/usr/src/strongswan/*"
 RUN apt-get install -y traceroute tcpdump net-tools
 
-CMD /usr/libexec/ipsec/charon --debug-ike 0 --debug-cfg 1 --debug-mgr 1 --debug-enc 0 --debug-net 0--debug-chd 1
+CMD /usr/libexec/ipsec/charon --debug-ike 0 --debug-cfg 1 --debug-mgr 1 --debug-enc 0 --debug-net 0 --debug-chd 1
