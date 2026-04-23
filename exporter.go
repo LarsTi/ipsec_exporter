@@ -216,10 +216,26 @@ func (c *StrongswanCollector) Collect (ch chan<- prometheus.Metric) {
 			prometheus.GaugeValue, //Type
 			float64(0), //Value
 		)
+		ch <- prometheus.MustNewConstMetric(
+			c.ikeCnt, //Description
+			prometheus.GaugeValue, //Type
+			float64(0), //Value
+		)
 		return
+	}
+	ikeConnCnt := 0
+	for _, ike := range data {
+		if ike.State == "ESTABLISHED" {
+			ikeConnCnt++
+		}
 	}
 	ch <- prometheus.MustNewConstMetric(
 		c.ikeConnCnt, //Description
+		prometheus.GaugeValue, //Type
+		float64(ikeConnCnt), //Value
+	)
+	ch <- prometheus.MustNewConstMetric(
+		c.ikeCnt, //Description
 		prometheus.GaugeValue, //Type
 		float64(len(data)), //Value
 	)

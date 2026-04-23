@@ -30,6 +30,7 @@ func listSAs() ([]LoadedIKE, error) {
 	defer cancel()
 
 	var in *vici.Message
+	active := make(map[string]bool)
 
 	for m, err := range s.CallStreaming(ctx, "list-sas", "list-sa", in) { // <- Directly iterate over msgs
 		if e := m.Err(); e != nil || err != nil {
@@ -43,8 +44,23 @@ func listSAs() ([]LoadedIKE, error) {
 				//ignoring this marshal/unmarshal error!
 				continue
 			}
+			active[k] = true
 			ike.Name = k
 			retVar = append(retVar, ike)
+		}
+	}
+	for m, err := range s.CallStreaming(ctx, "list-conns", "list-conn", in) {
+		if e := m.Err(); e != nil || err != nil {
+			//ignoring this error
+			continue
+		}
+		// Each key is a connection name
+		for _, k := range m.Keys() {
+			if !active[k] {
+				var ike LoadedIKE
+				ike.Name = k
+				retVar = append(retVar, ike)
+			} 
 		}
 	}
 
