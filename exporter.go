@@ -223,10 +223,19 @@ func (c *StrongswanCollector) Collect (ch chan<- prometheus.Metric) {
 		)
 		return
 	}
+	ch <- prometheus.MustNewConstMetric(
+		c.ikeCnt, //Description
+		prometheus.GaugeValue, //Type
+		float64(len(data)), //Value
+	)
 	ikeConnCnt := 0
-	for _, ike := range data {
-		if ike.State == "ESTABLISHED" {
+	for _,v := range data {
+		if v.State == "ESTABLISHED" {
 			ikeConnCnt++
+		}
+		c.collectIkeMetrics(v, ch)
+		for _, child := range v.Children {
+			c.collectSaMetrics(v.Name, v.UniqueId, child, ch)
 		}
 	}
 	ch <- prometheus.MustNewConstMetric(
@@ -234,17 +243,6 @@ func (c *StrongswanCollector) Collect (ch chan<- prometheus.Metric) {
 		prometheus.GaugeValue, //Type
 		float64(ikeConnCnt), //Value
 	)
-	ch <- prometheus.MustNewConstMetric(
-		c.ikeCnt, //Description
-		prometheus.GaugeValue, //Type
-		float64(len(data)), //Value
-	)
-	for _,v := range data {
-		c.collectIkeMetrics(v, ch)
-		for _, child := range v.Children {
-			c.collectSaMetrics(v.Name, v.UniqueId, child, ch)
-		}
-	}
 }
 func (c *StrongswanCollector) collectIkeMetrics(d LoadedIKE, ch chan<- prometheus.Metric){
 	ch <- prometheus.MustNewConstMetric(
